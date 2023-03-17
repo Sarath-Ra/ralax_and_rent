@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "379321137615",
+    "project_id": "relax-and-rent-38f05",
+    "storage_bucket": "relax-and-rent-38f05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379321137615:android:5ae4c02d75f5928ce27aba",
+        "android_client_info": {
+          "package_name": "com.example.ralax_and_rent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379321137615-0lnrurmun7rf3hgjbaf4qn34pb4lbv6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnuIHwU5L8RbUOcYVSD09RH7qWJVCNlKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379321137615-0lnrurmun7rf3hgjbaf4qn34pb4lbv6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
