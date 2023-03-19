@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,20 +16,52 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  // final _phoneNoController = TextEditingController();
 
-  void dispose() { 
+  void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmpasswordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    // _phoneNoController.dispose();
     super.dispose();
   }
 
   Future signUp() async {
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmpasswordController.text.isEmpty ||
+        _firstNameController.text.isEmpty ||
+        _lastNameController.text.isEmpty // || _phoneNoController.text.isEmpty
+        ) {
+      return;
+    }
     if (passwordConfirmed()) {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
+
+      addUserDetails(
+        _firstNameController.text.trim(),
+        _lastNameController.text.trim(),
+        _emailController.text.trim(),
+        // int.parse(_phoneNoController.text.trim())
+      );
+      // _addressController.text.trim());
     }
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,) async {
+    await FirebaseFirestore.instance.collection("users").add({
+      'first name': firstName,
+      'last name': lastName, 
+      'email': email,
+      // 'phone no': phoneNo
+      // 'address': address,
+    });
   }
 
   bool passwordConfirmed() {
@@ -36,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _confirmpasswordController.text.trim()) {
       return true;
     } else {
-      return false; 
+      return false;
     }
   }
 
@@ -50,18 +83,13 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.house,
-                  size: 100,
-                  color: Theme.of(context).accentColor,
-                ),
                 SizedBox(
-                  height: 100,
+                  height: 10,
                 ),
                 Text(
                   "Hello There!",
                   style: GoogleFonts.bebasNeue(
-                    fontSize: 54,
+                    fontSize: 52,
                   ),
                 ),
                 SizedBox(
@@ -71,9 +99,79 @@ class _RegisterPageState extends State<RegisterPage> {
                   "Register below with your details!",
                   style: TextStyle(fontSize: 20),
                 ),
+
                 SizedBox(
-                  height: 20,
+                  height: 50,
                 ),
+
+                // first name text field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: TextField(
+                        controller: _firstNameController,
+                        decoration: InputDecoration(
+                            border: InputBorder.none, hintText: 'Firstname'),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: TextField(
+                        controller: _lastNameController,
+                        decoration: InputDecoration(
+                            border: InputBorder.none, hintText: 'Lastname'),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: Colors.grey[200],
+                //       border: Border.all(color: Colors.white),
+                //       borderRadius: BorderRadius.circular(12),
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(left: 20.0),
+                //       child: TextField(
+                //         keyboardType: TextInputType.phone,
+                //         controller: _phoneNoController,
+                //         decoration: InputDecoration(
+                //             border: InputBorder.none, hintText: 'Phone no.'),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -140,6 +238,27 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   height: 10,
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: Colors.grey[200],
+                //       border: Border.all(color: Colors.white),
+                //       borderRadius: BorderRadius.circular(12),
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(left: 20.0),
+                //       child: TextField(
+                //         controller: _addressController,
+                //         decoration: InputDecoration(
+                //             border: InputBorder.none, hintText: 'Address'),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
