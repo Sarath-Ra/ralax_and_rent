@@ -65,6 +65,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar( 
+        title: Text('Relax and Rent',),
+        backgroundColor: Theme.of(context).accentColor,
+      ),
       body: _selectedPageIndex == 0
           ? FeedPage()
           : _selectedPageIndex == 1

@@ -1,7 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HouseItemRent extends StatelessWidget {
-  const HouseItemRent({super.key});
+  String area;
+  String date;
+  String furnished;
+  String imageUrl;
+  String owner;
+  int phone;
+  int price;
+  int type;
+  String loc;
+
+  HouseItemRent(
+      {required this.area,
+      required this.date,
+      required this.furnished,
+      required this.imageUrl,
+      required this.loc,
+      required this.owner,
+      required this.phone,
+      required this.price,
+      required this.type});
+
+  // void fetchRentHomeDetails() async {
+  //   CollectionReference _reference =
+  //       FirebaseFirestore.instance.collection('rent_house_details');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +44,8 @@ class HouseItemRent extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15)),
-                  child: Image.asset(
-                    "assets/list/p-1.png",
+                  child: Image.network(
+                    imageUrl,
                     height: 250,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -49,11 +74,11 @@ class HouseItemRent extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.schedule),
+                      Icon(Icons.currency_rupee_rounded),
                       SizedBox(
                         width: 6,
                       ),
-                      Text('\$ 75000'),
+                      Text('75000'),
                     ],
                   ),
                   Row(
