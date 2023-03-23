@@ -14,12 +14,39 @@ class SaleForm extends StatefulWidget {
 }
 
 class _SaleFormState extends State<SaleForm> {
+  String? _dropDownValuetypeVafi = "Villa";
+  String? _dropDownValueBHK = '1BHK';
+  String? _dropDownisFurnished = "Not Furnished";
+
+  // void dropDownTypeVAFI(String? selectedValue) {
+  //   if (selectedValue is String) {
+  //     setState(() {
+  //       _dropDownValuetypeVafi = selectedValue;
+  //     });
+  //   }
+  // }
+
+  List<String> _typeListVAFI = [
+    "Villa",
+    "Apartment",
+    "Flat",
+    "Individual House"
+  ];
+
+  List<String> _typeListBHK = ['1BHK', '2BHK', "3BHK"];
+
+  List<String> _typeListFurnished = [
+    "Not Furnished",
+    "Furnished",
+  ];
+
   final _ownerNameController = TextEditingController();
-  final _typeVAFIController = TextEditingController();
-  final _conController = TextEditingController();
+  // final _typeVAFIController = TextEditingController();
+  // DropdownButton(items: typeList, onChanged: dropDownTypeVAFI);
+  // final _conController = TextEditingController();
   final _priceController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _furnishedController = TextEditingController();
+  // final _furnishedController = TextEditingController();
   final _date = DateFormat.yMd().format(DateTime.now()!);
   final _areaController = TextEditingController();
   final _locController = TextEditingController();
@@ -29,11 +56,11 @@ class _SaleFormState extends State<SaleForm> {
   @override
   void dispose() {
     _ownerNameController.dispose();
-    _typeVAFIController.dispose();
-    _conController.dispose();
+    // _typeVAFIController.dispose();
+    // _conController.dispose();
     _priceController.dispose();
     _phoneController.dispose();
-    _furnishedController.dispose();
+    // _furnishedController.dispose();
     _areaController.dispose();
     imageUrl = '';
     _locController.dispose();
@@ -43,11 +70,11 @@ class _SaleFormState extends State<SaleForm> {
 
   Future addProperty_firebase() async {
     if (_ownerNameController.text.isEmpty ||
-        _typeVAFIController.text.isEmpty ||
-        _conController.text.isEmpty ||
+        // _typeVAFIController.text.isEmpty ||
+        // _conController.text.isEmpty ||
         _priceController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _furnishedController.text.isEmpty ||
+        // _furnishedController.text.isEmpty ||
         _areaController.text.isEmpty ||
         _locController.text.isEmpty) {
       return;
@@ -68,11 +95,11 @@ class _SaleFormState extends State<SaleForm> {
         ownerName: _ownerNameController.text.trim(),
         phone: int.parse(_phoneController.text.trim()),
         price: int.parse(_priceController.text.trim()),
-        typeVAFI: _typeVAFIController.text.trim(),
-        con: int.parse(_conController.text.trim()),
+        typeVAFI: _dropDownValuetypeVafi,
+        con: int.parse(_dropDownValueBHK![0]),
         area: int.parse(_areaController.text.trim()),
         date: _date,
-        furnished: _furnishedController.text.trim(),
+        furnished: _dropDownisFurnished,
         imageUrl: imageUrl,
         loc: _locController.text.trim());
   }
@@ -81,11 +108,11 @@ class _SaleFormState extends State<SaleForm> {
       {required String ownerName,
       required int phone,
       required int price,
-      required String typeVAFI,
+      required String? typeVAFI,
       required int con,
       required int area,
       required String date,
-      required String furnished,
+      required String? furnished,
       required String imageUrl,
       required String loc}) async {
     await FirebaseFirestore.instance.collection("sale_house_details").add({
@@ -100,6 +127,14 @@ class _SaleFormState extends State<SaleForm> {
       'price': price,
       'typeVAFI': typeVAFI,
     });
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Center(child: Text("Added Property")),
+          );
+        });
   }
 
   // final _phoneNoController = TextEditingController();
@@ -118,7 +153,7 @@ class _SaleFormState extends State<SaleForm> {
               height: 10,
             ),
             Text(
-              "House Details",
+              "Sale House Details",
               style: TextStyle(fontSize: 20),
             ),
 
@@ -148,29 +183,68 @@ class _SaleFormState extends State<SaleForm> {
               height: 10,
             ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    // keyboardType: TextInputType.numberWithOptions(),
-                    controller: _typeVAFIController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Villa/Apartment/Flat/Individual'),
-                  ),
+            Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: Center(
+                child: DropdownButton(
+                  isDense: true,
+                  alignment: Alignment.centerLeft,
+                  isExpanded: true,
+                  // disabledHint: Text("VAFI"),
+                  iconSize: 40,
+                  iconEnabledColor: Theme.of(context).accentColor,
+                  value: _dropDownValuetypeVafi,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _dropDownValuetypeVafi = newValue;
+                    });
+                  },
+                  items: _typeListVAFI
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )))
+                      .toList(),
                 ),
               ),
             ),
+
             SizedBox(
               height: 10,
             ),
+
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       border: Border.all(color: Colors.white),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 20.0),
+            //       child: TextField(
+            //         // keyboardType: TextInputType.numberWithOptions(),
+            //         controller: _typeVAFIController,
+            //         decoration: InputDecoration(
+            //             border: InputBorder.none,
+            //             hintText: 'Villa/Apartment/Flat/Individual'),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -217,49 +291,119 @@ class _SaleFormState extends State<SaleForm> {
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    controller: _conController,
-                    // obscureText: true,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'BHK'),
-                  ),
+            Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: Center(
+                child: DropdownButton(
+                  
+                  isDense: true,
+                  alignment: Alignment.centerLeft,
+                  isExpanded: true,
+                  // disabledHint: Text("VAFI"),
+                  iconSize: 40,
+                  iconEnabledColor: Theme.of(context).accentColor,
+                  value: _dropDownisFurnished,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _dropDownisFurnished = newValue;
+                    });
+                  },
+                  items: _typeListFurnished
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )))
+                      .toList(),
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       border: Border.all(color: Colors.white),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 20.0),
+            //       child: TextField(
+            //         keyboardType: TextInputType.number,
+            //         controller: _conController,
+            //         // obscureText: true,
+            //         decoration: InputDecoration(
+            //             border: InputBorder.none, hintText: 'BHK'),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: _furnishedController,
-                    // obscureText: true,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'Furnished?'),
-                  ),
+            Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: Center(
+                child: DropdownButton(
+                  
+                  isDense: true,
+                  alignment: Alignment.centerLeft,
+                  isExpanded: true,
+                  // disabledHint: Text("VAFI"),
+                  iconSize: 40,
+                  iconEnabledColor: Theme.of(context).accentColor,
+                  value: _dropDownValueBHK,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _dropDownValueBHK = newValue;
+                    });
+                  },
+                  items: _typeListBHK
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )))
+                      .toList(),
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       border: Border.all(color: Colors.white),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 20.0),
+            //       child: TextField(
+            //         keyboardType: TextInputType.text,
+            //         controller: _furnishedController,
+            //         // obscureText: true,
+            //         decoration: InputDecoration(
+            //             border: InputBorder.none, hintText: 'Furnished?'),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),
@@ -338,19 +482,19 @@ class _SaleFormState extends State<SaleForm> {
                   XFile? file =
                       await imagePicker.pickImage(source: ImageSource.gallery);
                   print('${file?.path}');
-    
+
                   if (file == null) return;
-    
+
                   String uniquFileName =
                       DateTime.now().millisecondsSinceEpoch.toString();
-    
+
                   Reference referenceRoot = FirebaseStorage.instance.ref();
                   Reference referenceDirIamges =
                       referenceRoot.child('sale_images');
-    
+
                   Reference referenceImageToUpload =
                       referenceDirIamges.child(uniquFileName);
-    
+
                   try {
                     await referenceImageToUpload.putFile(File(file!.path));
                     imageUrl = await referenceImageToUpload.getDownloadURL();
@@ -359,7 +503,17 @@ class _SaleFormState extends State<SaleForm> {
                 color: Colors.grey[500],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text('UPLOAD PHOTOS', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),), SizedBox(width: 20,),Icon(Icons.photo)],
+                  children: [
+                    Text(
+                      'UPLOAD PHOTOS',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(Icons.photo)
+                  ],
                 ),
               )),
             ),
@@ -371,7 +525,7 @@ class _SaleFormState extends State<SaleForm> {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: GestureDetector(
                 onTap: addProperty_firebase,
-                  // dispose();
+                // dispose();
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(

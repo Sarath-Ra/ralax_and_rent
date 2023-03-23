@@ -16,11 +16,23 @@ class RentForm extends StatefulWidget {
 }
 
 class _RentFormState extends State<RentForm> {
+
+  String? _dropDownValueBHK = '1BHK';
+  String? _dropDownisFurnished = "Not Furnished";
+
+
+  List<String> _typeListBHK = ['1BHK', '2BHK', "3BHK"];
+
+  List<String> _typeListFurnished = [
+    "Not Furnished",
+    "Furnished",
+  ];
+
   final _ownerNameController = TextEditingController();
-  final _typeController = TextEditingController();
+  //final _typeController = TextEditingController();
   final _priceController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _furnishedController = TextEditingController();
+  //final _furnishedController = TextEditingController();
   final _date = DateFormat.yMd().format(DateTime.now()!);
   final _areaController = TextEditingController();
   final _locationCityController = TextEditingController();
@@ -32,10 +44,10 @@ class _RentFormState extends State<RentForm> {
   @override
   void dispose() {
     _ownerNameController.dispose();
-    _typeController.dispose();
+    //_typeController.dispose();
     _priceController.dispose();
     _phoneController.dispose();
-    _furnishedController.dispose();
+    //_furnishedController.dispose();
     _areaController.dispose();
     imageUrl = '';
     _locationCityController.dispose();
@@ -45,10 +57,10 @@ class _RentFormState extends State<RentForm> {
 
   Future addPropertyfirebase() async {
     if (_ownerNameController.text.isEmpty ||
-        _typeController.text.isEmpty ||
+        //_typeController.text.isEmpty ||
         _priceController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _furnishedController.text.isEmpty ||
+        //_furnishedController.text.isEmpty ||
         _areaController.text.isEmpty ||
         _locationCityController.text.isEmpty) {
       return;
@@ -69,10 +81,10 @@ class _RentFormState extends State<RentForm> {
         ownerName: _ownerNameController.text.trim(),
         phone: int.parse(_phoneController.text.trim()),
         price: int.parse(_priceController.text.trim()),
-        type: int.parse(_typeController.text.trim()),
+        type: int.parse(_dropDownValueBHK![0]),
         area: _areaController.text.trim(),
         date: _date,
-        furnished: _furnishedController.text.trim(),
+        furnished: _dropDownisFurnished,
         imageUrl: imageUrl,
         loc: _locationCityController.text.trim());
   }
@@ -84,7 +96,7 @@ class _RentFormState extends State<RentForm> {
       required int type,
       required String area,
       required String date,
-      required String furnished,
+      required String? furnished,
       required String imageUrl,
       required String loc}) async {
     await FirebaseFirestore.instance.collection("rent_house_details").add({
@@ -97,6 +109,14 @@ class _RentFormState extends State<RentForm> {
       'type': type,
       'imageUrlHome': imageUrl,
       'loc': loc
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Center(child: Text("Added Property")),
+        );
     });
   }
 
@@ -144,22 +164,38 @@ class _RentFormState extends State<RentForm> {
               height: 10,
             ),
     
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    keyboardType: TextInputType.numberWithOptions(),
-                    controller: _typeController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'BHK'),
-                  ),
+            Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: Center(
+                child: DropdownButton(
+                  
+                  isDense: true,
+                  alignment: Alignment.centerLeft,
+                  isExpanded: true,
+                  // disabledHint: Text("VAFI"),
+                  iconSize: 40,
+                  iconEnabledColor: Theme.of(context).accentColor,
+                  value: _dropDownValueBHK,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _dropDownValueBHK = newValue;
+                    });
+                  },
+                  items: _typeListBHK
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )))
+                      .toList(),
                 ),
               ),
             ),
@@ -212,23 +248,38 @@ class _RentFormState extends State<RentForm> {
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: _furnishedController,
-                    //obscureText: true,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'Furnished?'),
-                  ),
+            Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: Center(
+                child: DropdownButton(
+                  
+                  isDense: true,
+                  alignment: Alignment.centerLeft,
+                  isExpanded: true,
+                  // disabledHint: Text("VAFI"),
+                  iconSize: 40,
+                  iconEnabledColor: Theme.of(context).accentColor,
+                  value: _dropDownisFurnished,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _dropDownisFurnished = newValue;
+                    });
+                  },
+                  items: _typeListFurnished
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )))
+                      .toList(),
                 ),
               ),
             ),
