@@ -1,7 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import '';
 import '../widget/house_item_rent.dart';
 
 class RentPage extends StatelessWidget {

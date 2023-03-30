@@ -49,8 +49,31 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  final double caverHeight = 200;
+
+  Widget buildCoverImage() => Container(
+        color: Colors.grey,
+        child: Image.asset(
+          "assets/list/p-6.png",
+          width: double.infinity,
+          height: caverHeight,
+          fit: BoxFit.cover,
+        ),
+      );
+
+  final double profileHeight = 144;
+
+  Widget buildProfileImage() => CircleAvatar(
+        radius: profileHeight / 2,
+        backgroundColor: Colors.grey.shade800,
+        backgroundImage: NetworkImage(
+            'https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-male-avatar-simple-cartoon-design-png-image_1934458.jpg'),
+      );
+
+
   @override
   Widget build(BuildContext context) {
+  final double top = caverHeight - profileHeight / 2;
     return Scaffold(
         body: SingleChildScrollView(
       child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -58,65 +81,61 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Center(
                 child: Column(
           children: [
-            SizedBox(
-              height: 30,
-            ),
-            
-            Center(
-              child: Text(
-                "Hello There!",
-                style: GoogleFonts.bebasNeue(
-                  fontSize: 52,
-                ),
-              ),
-            ),
-            
-            // first name text field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    readOnly: _editEnable,
-                    controller: _firstNameController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'Firstname'),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                buildCoverImage(),
+                Positioned(top: top, child: buildProfileImage())
+              ],
             ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    readOnly: _editEnable,
-                    controller: _lastNameController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'Lastname'),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            // first name text field
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       border: Border.all(color: Colors.white),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 20.0),
+            //       child: TextField(
+            //         readOnly: _editEnable,
+            //         controller: _firstNameController,
+            //         decoration: InputDecoration(
+            //             border: InputBorder.none, hintText: 'Firstname'),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       border: Border.all(color: Colors.white),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 20.0),
+            //       child: TextField(
+            //         readOnly: _editEnable,
+            //         controller: _lastNameController,
+            //         decoration: InputDecoration(
+            //             border: InputBorder.none, hintText: 'Lastname'),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
 
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -141,50 +160,50 @@ class _ProfilePageState extends State<ProfilePage> {
             //   height: 10,
             // ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    readOnly: _editEnable,
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: user.email!),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 0,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       border: Border.all(color: Colors.white),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 20.0),
+            //       child: TextField(
+            //         readOnly: _editEnable,
+            //         controller: _emailController,
+            //         decoration: InputDecoration(
+            //             border: InputBorder.none, hintText: user.email!),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 0,
+            // ),
           ],
         ))),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.37,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("EDIT PROFILE"),
-              IconButton(
-                onPressed: () => changeEditEnable(),
-                icon: Icon(
-                  Icons.edit,
-                  size: 20,
-                ))
-            ],
-          ),
-        ),
-        MaterialButton(
-          onPressed: () => changeEditEnable(),
-          color: Theme.of(context).accentColor,
-          child: Text("Save Details"),
-        ),
+        // Container(
+        //   width: MediaQuery.of(context).size.width * 0.37,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //     children: [
+        //       Text("EDIT PROFILE"),
+        //       IconButton(
+        //         onPressed: () => changeEditEnable(),
+        //         icon: Icon(
+        //           Icons.edit,
+        //           size: 20,
+        //         ))
+        //     ],
+        //   ),
+        // ),
+        // MaterialButton(
+        //   onPressed: () => changeEditEnable(),
+        //   color: Theme.of(context).accentColor,
+        //   child: Text("Save Details"),
+        // ),
 
         // Expanded(
         //     child: FutureBuilder(
@@ -240,31 +259,60 @@ class _ProfilePageState extends State<ProfilePage> {
         //   ),
         // ),
 
+        // SizedBox(
+        //   height: 10,
+        // ),
 
         SizedBox(
-          height: 10,
+          height: 60,
         ),
-        
+
+        Center(
+              child: Text(
+                "Hello There!",
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 52,
+                ),
+              ),
+            ),
+        Center(
+              child: Text(
+                "You're Signed in as " + user.email!,
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+
+        SizedBox(
+          height: 15,
+        ),
+
         GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
               return SaleForm();
             }));
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             height: 50,
-            decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(30)),
+            decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(30)),
             width: MediaQuery.of(context).size.width * 0.78,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "SALE-PROPERTY",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
                 ),
-                Icon(Icons.arrow_forward_ios_rounded, size: 30, weight: 30,)
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 30,
+                  weight: 30,
+                )
               ],
             ),
           ),
@@ -276,24 +324,29 @@ class _ProfilePageState extends State<ProfilePage> {
 
         GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) {
-              return  RentForm();
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return RentForm();
             }));
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             height: 50,
-            decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(30)),
+            decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(30)),
             width: MediaQuery.of(context).size.width * 0.78,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "RENT-PROPERTY",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
                 ),
-                Icon(Icons.arrow_forward_ios_rounded, size: 30, weight: 30,)
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 30,
+                  weight: 30,
+                )
               ],
             ),
           ),
@@ -306,16 +359,21 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           height: 50,
-          decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(30)),
+          decoration: BoxDecoration(
+              color: Colors.redAccent, borderRadius: BorderRadius.circular(30)),
           width: MediaQuery.of(context).size.width * 0.78,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "FAVOURITES",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
               ),
-              Icon(Icons.arrow_forward_ios_rounded, size: 30, weight: 30,)
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 30,
+                weight: 30,
+              )
             ],
           ),
         ),
@@ -327,16 +385,21 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           height: 50,
           padding: EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(30)),
+          decoration: BoxDecoration(
+              color: Colors.redAccent, borderRadius: BorderRadius.circular(30)),
           width: MediaQuery.of(context).size.width * 0.78,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "MY PROPERTIES",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
               ),
-              Icon(Icons.arrow_forward_ios_rounded, size: 30, weight: 30,)
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 30,
+                weight: 30,
+              )
             ],
           ),
         ),
@@ -362,7 +425,7 @@ class _ProfilePageState extends State<ProfilePage> {
         //     ),
         //   ],
         // ),
-        // if (_isPropertySale) if (!_showRentForm) 
+        // if (_isPropertySale) if (!_showRentForm)
         //   RentForm(),
         // if (_isPropertySale) if (_showRentForm)
         //   SaleForm(),
@@ -375,7 +438,9 @@ class _ProfilePageState extends State<ProfilePage> {
             FirebaseAuth.instance.signOut();
           },
           color: Theme.of(context).accentColor,
-          child: Text("SIGNOUT",),
+          child: Text(
+            "SIGNOUT",
+          ),
           //child: Text("SIGN OUT " + user.email!),
         ),
       ]),

@@ -33,7 +33,8 @@ class _RentFormState extends State<RentForm> {
   final _priceController = TextEditingController();
   final _phoneController = TextEditingController();
   //final _furnishedController = TextEditingController();
-  final _date = DateFormat.yMd().format(DateTime.now()!);
+  //final _date = DateFormat.yMd().format(DateTime.now()!);
+  final _date = DateTime.now();
   final _areaController = TextEditingController();
   final _locationCityController = TextEditingController();
 
@@ -83,7 +84,7 @@ class _RentFormState extends State<RentForm> {
         price: int.parse(_priceController.text.trim()),
         type: int.parse(_dropDownValueBHK![0]),
         area: _areaController.text.trim(),
-        date: _date,
+        date: _date.toString(),
         furnished: _dropDownisFurnished,
         imageUrl: imageUrl,
         loc: _locationCityController.text.trim());

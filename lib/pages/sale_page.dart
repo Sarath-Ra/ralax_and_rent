@@ -1,22 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:ralax_and_rent/widget/house_item_sale.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SalePage extends StatefulWidget {
-  const SalePage({super.key});
+class SalePage extends StatelessWidget {
+  SalePage({super.key}) {
+    _stream = _reference.snapshots();
+  }
 
-  @override
-  State<SalePage> createState() => _SalePageState();
-}
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('sale_house_details');
 
-class _SalePageState extends State<SalePage> {
+  late Stream<QuerySnapshot> _stream;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-          itemBuilder: (ctx, index) {
-            return HouseItemSale();
-          },
-          itemCount: 4,
-        ));
+      body: StreamBuilder<QuerySnapshot>(
+      stream: _stream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Some Error Occured ${snapshot.error}"),
+          );
+        }
+        if (snapshot.hasData) {
+          QuerySnapshot querySnapshot = snapshot.data;
+          List<QueryDocumentSnapshot> document = querySnapshot.docs;
+
+          List<Map> items = document
+              .map((e) => {
+                    'id': e.id,
+                    'area': e['area'],
+                    'con': e['con'],
+                    'date': e['date'],
+                    'furnished': e['furnished'],
+                    'imageUrlHome': e['imageUrlHome'],
+                    'loc': e['loc'],
+                    'owner_name': e['owner_name'],
+                    'phone': e['phone'],
+                    'price': e['price'],
+                    'typeVAFI': e['typeVAFI'],
+                  })
+              .toList();
+
+          return ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              Map thisItem = items[index];
+              return HouseItemSale(
+                  area: thisItem['area'],
+                  con: thisItem['con'],
+                  date: thisItem['date'],
+                  furnished: thisItem['furnished'],
+                  imageUrl: thisItem['imageUrlHome'],
+                  loc: thisItem['loc'],
+                  owner: thisItem['owner_name'],
+                  phone: thisItem['phone'],
+                  price: thisItem['price'],
+                  typeVAFI: thisItem['typeVAFI']);
+            },
+            itemCount: items.length,
+          );
+        }
+
+        return Center(child: CircularProgressIndicator());
+      },
+    )
+
+        // ListView.builder(
+        //   itemBuilder: (ctx, index) {
+        //     return HouseItemRent();
+        //   },
+        //   itemCount: 4,
+        // )
+        );
   }
 }

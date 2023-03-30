@@ -4,6 +4,8 @@ import 'package:ralax_and_rent/pages/feed_page.dart';
 import 'package:ralax_and_rent/pages/profile_page.dart';
 import 'package:ralax_and_rent/pages/rent_page.dart';
 import 'package:ralax_and_rent/pages/sale_page.dart';
+import 'package:ralax_and_rent/pages/search_page.dart';
+import 'package:ralax_and_rent/widget/search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +20,8 @@ class _HomePageState extends State<HomePage> {
   final List<String> titleName = ['Home', 'Rent', 'Sale', 'Profile'];
 
   int _selectedPageIndex = 0;
+
+  //final searchController = TextEditingController();
 
   void _selectPage(int index) {
     if (_selectedPageIndex == index) {
@@ -46,6 +50,11 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.search),
+            label: 'Search'
+          ),
+          BottomNavigationBarItem(
               backgroundColor: Theme.of(context).primaryColor,
               icon: Icon(Icons.house),
               label: 'Rent'),
@@ -65,17 +74,37 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( 
-        title: Text('Relax and Rent',),
-        backgroundColor: Theme.of(context).accentColor,
-      ),
+      //appBar: SearchWidget(),
+      // appBar: AppBar(
+        // surfaceTintColor: Colors.white,
+        //primary: ,
+        // bottom: PreferredSize(
+        //   preferredSize: Size.fromHeight(10),
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //     child: Center(
+        //       child: TextField(
+        //         controller: searchController,
+        //         decoration: InputDecoration(
+        //           hintText: 'Search House',
+        //           border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0))
+        //           //OutlineInputBorder(borderRadius: BorderRadius.circular(30))
+        //         ),
+        //       ),
+        //     ),
+        //   )
+        // ),
+      //   backgroundColor: Colors.white,
+      // ),
       body: _selectedPageIndex == 0
           ? FeedPage()
           : _selectedPageIndex == 1
-              ? RentPage()
+              ? SearchPage()
               : _selectedPageIndex == 2
-                  ? SalePage()
-                  : ProfilePage(),
+                  ? RentPage()
+                  : _selectedPageIndex == 3
+                    ? SalePage()
+                    : ProfilePage(),
       bottomNavigationBar: bottomNavigationBar,
     );
   }

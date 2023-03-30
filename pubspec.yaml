@@ -41,6 +41,7 @@ dependencies:
   image_picker: ^0.8.7
   firebase_storage: ^11.0.16
   dropdown_button2: ^2.0.0
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
   assets:
     - assets\list\p-1.png
     - assets\list\p-2.png
+    - assets/list/p-6.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

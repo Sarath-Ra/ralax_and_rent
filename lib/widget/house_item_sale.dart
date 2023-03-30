@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:ralax_and_rent/new_page/sale_details.dart';
 
 class HouseItemSale extends StatelessWidget {
-  const HouseItemSale({super.key});
+  int area;
+  int con;
+  String date;
+  String furnished;
+  String imageUrl;
+  String owner;
+  int phone;
+  int price;
+  String typeVAFI;
+  String loc;
+
+  HouseItemSale(
+      {required this.area,
+      required this.con,
+      required this.date,
+      required this.furnished,
+      required this.imageUrl,
+      required this.loc,
+      required this.owner,
+      required this.phone,
+      required this.price,
+      required this.typeVAFI});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => null,
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return SaleDetails(area: area, date: date, furnished: furnished, imageUrl: imageUrl, loc: loc, owner: owner, phone: phone, price: price, typeVAFI: typeVAFI, con: con,);
+        }));
+      },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 4,
@@ -19,8 +45,8 @@ class HouseItemSale extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15)),
-                  child: Image.asset(
-                    "assets/list/p-2.png",
+                  child: Image.network(
+                    imageUrl,
                     height: 250,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -35,7 +61,7 @@ class HouseItemSale extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         child: Text(
-                          "Rent",
+                          loc,
                           style: TextStyle(fontSize: 26, color: Colors.white),
                           softWrap: true,
                           overflow: TextOverflow.fade,
@@ -43,40 +69,95 @@ class HouseItemSale extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.schedule),
-                      SizedBox(
-                        width: 6,
+                      Row(
+                        children: [
+                          Icon(Icons.currency_rupee_rounded),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(price.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                        ],
                       ),
-                      Text('\$ 75000'),
+                      Row(
+                        children: [
+                          IconButton(onPressed: null, icon: Icon(Icons.favorite_border_rounded)),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text("Like", style: TextStyle(fontWeight: FontWeight.w600),),
+                        ],
+                      ),
                     ],
                   ),
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.work),
-                      SizedBox(
-                        width: 6,
+                      Row(
+                        children: [
+                          Icon(Icons.home, size: 20,),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(typeVAFI, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),),
+                        ],
                       ),
-                      Text("Chennai"),
+                      SizedBox(
+                        width: 25,
+                      ),
+                      Row(
+                        children: [
+                          // Icon(Icons.home, size: 20,),
+                          // SizedBox(
+                          //   width: 6,
+                          // ),
+                          Text(con.toString()  + "BHK", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),),
+                        ],
+                      ),
                     ],
                   ),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.attach_money),
-                      SizedBox(
-                        width: 6,
+                      Row(
+                        children: [
+                          Text(area.toString() + " Sq.Ft.", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),),
+                        ],
                       ),
-                      Text("3BHK"),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Row(
+                        children: [
+                          // Icon(Icons.event_seat, size: 20,),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(furnished, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),),
+                        ],
+                      ),
                     ],
+                  ),
+
+                  SizedBox(
+                    height: 10,
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
